@@ -7,7 +7,7 @@ const userDefaultState = {
   lastname: null,
   email: null,
   mobile: null,
-  token: nul,
+  token: null,
 };
 
 const initialState = {
