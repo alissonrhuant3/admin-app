@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FaBloggerB, FaClipboardList } from "react-icons/fa";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications } from "react-icons/io";
@@ -163,7 +163,7 @@ const MainLayout = () => {
                 3
               </span>
             </div>
-            <div className="d-flex gap-3 align-items-center">
+            <div className="d-flex gap-3 align-items-center dropdown">
               <div>
                 <img
                   width={32}
@@ -172,9 +172,34 @@ const MainLayout = () => {
                   alt=""
                 />
               </div>
-              <div>
+              <div
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <h5 className="mb-0">Alisson</h5>
-                <p className="mb-0">alisson@gmail.com</p>
+                <p className="mb-0">alissondwadwadadw@gmail.com</p>
+              </div>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li>
+                  <Link
+                    className="dropdown-item py-1 mb-1"
+                    style={{ lineHeight: "20px" }}
+                    to="#"
+                  >
+                    Ver Perfil
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="dropdown-item py-1 mb-1"
+                    style={{ lineHeight: "20px" }}
+                    to="#"
+                  >
+                    Sair
+                  </Link>
+                </li>
               </div>
             </div>
           </div>
@@ -188,7 +213,7 @@ const MainLayout = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-            <Outlet />
+          <Outlet />
         </Content>
       </Layout>
     </Layout>

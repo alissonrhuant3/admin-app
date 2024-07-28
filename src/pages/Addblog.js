@@ -32,7 +32,7 @@ const Addblog = () => {
   };
   return (
     <div>
-      <h3 className="mb-4">Adicionar Blog</h3>
+      <h3 className="mb-4 title">Adicionar Blog</h3>
 
       <div className="">
         <form action="">

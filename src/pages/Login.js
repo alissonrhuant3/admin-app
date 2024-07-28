@@ -11,7 +11,7 @@ const Login = () => {
       <br />
       <br />
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-3">
-        <h3 className="text-center">Entrar</h3>
+        <h3 className="text-center title">Entrar</h3>
         <p className="text-center">Entre em sua conta para continuar</p>
         <form action="">
           <CustomInput type="text" label="Email" id="email" />

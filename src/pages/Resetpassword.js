@@ -10,7 +10,7 @@ const Resetpassword = () => {
       <br />
       <br />
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-3">
-        <h3 className="text-center">Resetar Senha</h3>
+        <h3 className="text-center title">Resetar Senha</h3>
         <p className="text-center">Insira sua nova senha. </p>
         <form action="">
           <CustomInput type="password" label="Nova Senha" id="pass" />

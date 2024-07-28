@@ -32,7 +32,7 @@ const Addproduct = () => {
   };
   return (
     <div>
-      <h3 className="mb-4">Adicionar Produto</h3>
+      <h3 className="mb-4 title">Adicionar Produto</h3>
       <div>
         <form action="">
           <CustomInput type="text" label="Insira o Titulo do Produto" />
