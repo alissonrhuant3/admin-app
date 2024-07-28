@@ -14,8 +14,20 @@ const Login = () => {
         <h3 className="text-center title">Entrar</h3>
         <p className="text-center">Entre em sua conta para continuar</p>
         <form action="">
-          <CustomInput type="text" label="Email" id="email" />
-          <CustomInput type="password" label="Senha" id="pass" />
+          <CustomInput
+            type="text"
+            name="email"
+            label="Email"
+            id="email"
+            value="df"
+          />
+          <CustomInput
+            type="password"
+            name="password"
+            label="Senha"
+            id="pass"
+            value="df"
+          />
           <div className="mb-3 text-end">
             <Link to="forgot-password">Esqueceu sua Senha?</Link>
           </div>
