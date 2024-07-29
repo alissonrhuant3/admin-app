@@ -23,17 +23,15 @@ const Login = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       dispatch(login(values));
-      alert(JSON.stringify(values, null, 2));
     },
   });
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const authState = useSelector((state) => state);
+  const { user, isLoading, isError, isSuccess, message } = authState.auth;
   useEffect(() => {
-    if (!user == null || isSuccess) {
+    if (isSuccess) {
       navigate("admin");
     } else {
-      alert('not')
+      alert("not");
     }
   }, [user, isLoading, isError, isSuccess, message]);
   return (
@@ -46,6 +44,9 @@ const Login = () => {
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-3">
         <h3 className="text-center title">Entrar</h3>
         <p className="text-center">Entre em sua conta para continuar</p>
+        <div className="error text-center">
+          {message.message == "Rejected" ? "Você não tem Autorização" : ""}
+        </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
             type="text"

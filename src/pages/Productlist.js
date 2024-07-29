@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../features/product/productSlice";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -9,29 +12,72 @@ const columns = [
     dataIndex: "key",
   },
   {
-    title: "Nome",
-    dataIndex: "name",
+    title: "Titulo",
+    dataIndex: "title",
+    sorter: (a,b) => a.title.length - b.title.length,
   },
   {
-    title: "Produto",
-    dataIndex: "product",
+    title: "Marca",
+    dataIndex: "brand",
+    sorter: (a,b) => a.brand.length - b.brand.length,
   },
   {
-    title: "Status",
-    dataIndex: "status",
+    title: "Categoria",
+    dataIndex: "category",
+    sorter: (a,b) => a.category.length - b.category.length,
+  },
+  {
+    title: "Cor",
+    dataIndex: "color",
+  },
+  {
+    title: "Preço",
+    dataIndex: "price",
+    sorter: (a,b) => a.price.length - b.price.length,
+  },
+  {
+    title: "Vendidos",
+    dataIndex: "sold",
+  },
+  {
+    title: "Avaliações",
+    dataIndex: "totalrating",
+  },
+  {
+    title: "Ações",
+    dataIndex: "action",
   },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    status: `London, Park Lane no. ${i}`,
-  });
-}
 
 const Productlist = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+  const productState = useSelector((state) => state.product.products);
+  const data1 = [];
+  for (let i = 0; i < productState.length; i++) {
+    data1.push({
+      key: i + 1,
+      title: productState[i].title,
+      brand: productState[i].brand,
+      category: productState[i].category,
+      color: productState[i].color,
+      price: `R$ ${productState[i].price}`,
+      sold: productState[i].sold,
+      totalrating: productState[i].totalrating,
+      action: (
+        <>
+          <Link to="/" className="">
+            <BiEdit className="fs-5"/>
+          </Link>
+          <Link className="ms-3 text-danger" to="/">
+            <AiFillDelete className="fs-5"/>
+          </Link>
+        </>
+      ),
+    });
+  }
   return (
     <div>
       <h3 className="mb-4 title">Produtos</h3>
