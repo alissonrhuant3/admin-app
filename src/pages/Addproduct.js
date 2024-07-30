@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "../components/CustomInput";
 import { getBrands } from "../features/brand/brandSlice";
@@ -7,12 +8,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Multiselect from "react-widgets/Multiselect";
+import { Select } from "antd";
 import { getColors } from "../features/color/colorSlice";
-import "react-widgets/styles.css";
 import Dropzone from "react-dropzone";
 import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProducts } from "../features/product/productSlice";
+import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Titulo é Requerido!"),
@@ -21,12 +22,18 @@ let schema = Yup.object().shape({
   quantity: Yup.number().required("Quantidade é Requerido!"),
   brand: Yup.string().required("Marca é Requerido!"),
   category: Yup.string().required("Categoria é Requerido!"),
+  tags: Yup.string().required("Tag é Requerido!"),
+  color: Yup.array()
+    .min(1, "Selecione no minimo uma cor")
+    .required("Cor é Requerido!"),
 });
 const Addproduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
+  console.log(color);
 
   useEffect(() => {
     dispatch(getBrands());
@@ -38,12 +45,23 @@ const Addproduct = () => {
   const categoryState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const imgState = useSelector((state) => state.upload.images);
+  const newProduct = useSelector((state) => state.product);
+  const { isSuccess, isError, isLoading, createdProduct } = newProduct;
 
-  const colors = [];
+  useEffect(() => {
+    if(isSuccess && createdProduct) {
+      toast.success("Produto Adicionado com Sucesso!");
+    }
+    if(isError) {
+      toast.error("Algo Deu Errado!");
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  const coloropt = [];
   colorState.forEach((i) => {
-    colors.push({
-      _id: i._id,
-      color: i.title,
+    coloropt.push({
+      value: i._id,
+      label: i.title,
     });
   });
 
@@ -55,7 +73,7 @@ const Addproduct = () => {
     });
   });
   useEffect(() => {
-    formik.values.color = color;
+    formik.values.color = color ? color : " ";
     formik.values.images = img;
   }, [color, img]);
 
@@ -67,17 +85,24 @@ const Addproduct = () => {
       brand: "",
       color: "",
       category: "",
+      tags: "",
       quantity: "",
       images: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createProducts(values))
+      alert(JSON.stringify(values));
+      dispatch(createProducts(values));
+      formik.resetForm();
+      setColor(null);
+      setTimeout(() => {
+        navigate("/admin/list-product");
+      }, 3000);
     },
   });
-  const [desc, setDesc] = useState();
-  const handleDesc = (e) => {
-    setDesc(e);
+  const handleColors = (e) => {
+    setColor(e);
+    console.log(color);
   };
   return (
     <div>
@@ -160,13 +185,36 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.category && formik.errors.category}
           </div>
-          <Multiselect
-            dataKey="id"
-            name="color"
-            textField="color"
-            onChange={(e) => setColor(e)}
-            data={colors}
+          <select
+            name="tags"
+            onChange={formik.handleChange("tags")}
+            onBlur={formik.handleBlur("tags")}
+            value={formik.values.tags}
+            className="form-control py-3 mb-3"
+            id=""
+          >
+            <option value="" disabled>
+              Selecione a Tag
+            </option>
+            <option value="featured">Destaque</option>
+            <option value="popular">Popular</option>
+            <option value="special">Especial</option>
+          </select>
+          <div className="error">
+            {formik.touched.tags && formik.errors.tags}
+          </div>
+          <Select
+            mode="multiple"
+            allowClear
+            className="w-100"
+            placeholder="Selecione as cores"
+            defaultValue={color}
+            onChange={(i) => handleColors(i)}
+            options={coloropt}
           />
+          <div className="error">
+            {formik.touched.color && formik.errors.color}
+          </div>
           <CustomInput
             name="quantity"
             onCh={formik.handleChange("quantity")}
