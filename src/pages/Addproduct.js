@@ -33,7 +33,6 @@ const Addproduct = () => {
 
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
-  console.log(color);
 
   useEffect(() => {
     dispatch(getBrands());
