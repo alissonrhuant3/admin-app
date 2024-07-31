@@ -8,6 +8,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
+import { RiCouponLine } from "react-icons/ri";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SiBrandfolder } from "react-icons/si";
@@ -24,7 +25,7 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
   return (
-    <Layout>
+    <Layout /* onContextMenu={(e) => e.preventDefault()} */> 
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
@@ -129,6 +130,23 @@ const MainLayout = () => {
                   key: "blog-category-list",
                   icon: <FaBloggerB className="fs-4" />,
                   label: "Listar Categorias",
+                },
+              ],
+            },
+            {
+              key: "marketing",
+              icon: <RiCouponLine className="fs-4" />,
+              label: "Marketing",
+              children: [
+                {
+                  key: "coupon",
+                  icon: <FaBloggerB className="fs-4" />,
+                  label: "Adicionar Cupom",
+                },
+                {
+                  key: "coupon-list",
+                  icon: <RiCouponLine className="fs-4" />,
+                  label: "Listar Cupons",
                 },
               ],
             },
