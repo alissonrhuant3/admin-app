@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createCategory } from "../features/pcategory/pcategorySlice";
+import {
+  createCategory,
+  resetState,
+} from "../features/pcategory/pcategorySlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Nome da marca é Requerido!"),
@@ -20,9 +23,6 @@ const Addcat = () => {
   useEffect(() => {
     if (isSuccess && createdCategory) {
       toast.success("Categoria Adicionado com Sucesso!");
-      setTimeout(() => {
-        navigate("/admin/list-category");
-      }, 3000);
     }
     if (isError) {
       toast.error("Algo Deu Errado!");
@@ -37,6 +37,9 @@ const Addcat = () => {
     onSubmit: (values) => {
       dispatch(createCategory(values));
       formik.resetForm();
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 3000);
     },
   });
 

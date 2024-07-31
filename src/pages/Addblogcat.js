@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createCategorie } from "../features/bcategory/bcategorySlice";
+import {
+  createCategorie,
+  resetState,
+} from "../features/bcategory/bcategorySlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Nome da categoria do blog é Requerido!"),
@@ -20,9 +23,6 @@ const Addblogcat = () => {
   useEffect(() => {
     if (isSuccess && createdBlogCategory) {
       toast.success("Categoria de Blog Adicionada com Sucesso!");
-      setTimeout(() => {
-        navigate("/admin/blog-category-list");
-      }, 3000);
     }
     if (isError) {
       toast.error("Algo Deu Errado!");
@@ -37,6 +37,9 @@ const Addblogcat = () => {
     onSubmit: (values) => {
       dispatch(createCategorie(values));
       formik.resetForm();
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 3000);
     },
   });
 

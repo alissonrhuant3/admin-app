@@ -12,7 +12,7 @@ import { Select } from "antd";
 import { getColors } from "../features/color/colorSlice";
 import Dropzone from "react-dropzone";
 import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProducts } from "../features/product/productSlice";
+import { createProducts, resetState } from "../features/product/productSlice";
 import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
@@ -48,10 +48,10 @@ const Addproduct = () => {
   const { isSuccess, isError, isLoading, createdProduct } = newProduct;
 
   useEffect(() => {
-    if(isSuccess && createdProduct) {
+    if (isSuccess && createdProduct) {
       toast.success("Produto Adicionado com Sucesso!");
     }
-    if(isError) {
+    if (isError) {
       toast.error("Algo Deu Errado!");
     }
   }, [isSuccess, isError, isLoading]);
@@ -95,7 +95,7 @@ const Addproduct = () => {
       formik.resetForm();
       setColor(null);
       setTimeout(() => {
-        navigate("/admin/list-product");
+        dispatch(resetState());
       }, 3000);
     },
   });

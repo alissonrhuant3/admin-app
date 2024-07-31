@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createBrand } from "../features/brand/brandSlice";
+import { createBrand, resetState } from "../features/brand/brandSlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Nome da marca é Requerido!"),
@@ -18,10 +18,10 @@ const Addbrand = () => {
   const { isSuccess, isError, isLoading, createdBrand } = newBrand;
 
   useEffect(() => {
-    if(isSuccess && createdBrand) {
+    if (isSuccess && createdBrand) {
       toast.success("Marca Adicionado com Sucesso!");
     }
-    if(isError) {
+    if (isError) {
       toast.error("Algo Deu Errado!");
     }
   }, [isSuccess, isError, isLoading]);
@@ -35,7 +35,7 @@ const Addbrand = () => {
       dispatch(createBrand(values));
       formik.resetForm();
       setTimeout(() => {
-        navigate("/admin/list-brand");
+        dispatch(resetState());
       }, 3000);
     },
   });

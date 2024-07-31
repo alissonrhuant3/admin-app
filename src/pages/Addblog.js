@@ -10,7 +10,7 @@ import Dropzone from "react-dropzone";
 import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
 import { toast } from "react-toastify";
 import { getCategories } from "../features/bcategory/bcategorySlice";
-import { createBlog } from "../features/blog/blogSlice";
+import { createBlog, resetState } from "../features/blog/blogSlice";
 
 
 let schema = Yup.object().shape({
@@ -37,9 +37,6 @@ const Addblog = () => {
   useEffect(() => {
     if (isSuccess && createdBlog) {
       toast.success("Blog Adicionado com Sucesso!");
-      setTimeout(() => {
-        navigate("/admin/blog-list");
-      }, 3000);
     }
     if (isError) {
       toast.error("Algo Deu Errado!");
@@ -68,6 +65,9 @@ const Addblog = () => {
     onSubmit: (values) => {
       dispatch(createBlog(values));
       formik.resetForm();
+      setTimeout(() => {
+        dispatch(resetState())
+      }, 3000);
     },
   });
 

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import bCategoryService from "./bcategoryService";
 
 export const getCategories = createAsyncThunk(
@@ -14,7 +14,7 @@ export const getCategories = createAsyncThunk(
 
 export const createCategorie = createAsyncThunk(
   "blogCategory/create-categorie",
-  async (categoryData,thunkAPI) => {
+  async (categoryData, thunkAPI) => {
     try {
       return await bCategoryService.createBlogCategories(categoryData);
     } catch (error) {
@@ -22,6 +22,19 @@ export const createCategorie = createAsyncThunk(
     }
   }
 );
+
+export const deleteCategorie = createAsyncThunk(
+  "blogCategory/delete-categorie",
+  async (id, thunkAPI) => {
+    try {
+      return await bCategoryService.deleteBlogCategories(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const resetState = createAction("Reset_all");
 
 const initialState = {
   bCategories: [],
@@ -68,7 +81,24 @@ export const bCategorySlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(deleteCategorie.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCategorie.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deleteBlogCategory = action.payload;
+        state.message = "success";
+      })
+      .addCase(deleteCategorie.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import brandService from "./brandService";
 
 export const getBrands = createAsyncThunk(
@@ -14,7 +14,7 @@ export const getBrands = createAsyncThunk(
 
 export const createBrand = createAsyncThunk(
   "brand/create-brand",
-  async (brandData,thunkAPI) => {
+  async (brandData, thunkAPI) => {
     try {
       return await brandService.createBrand(brandData);
     } catch (error) {
@@ -22,6 +22,8 @@ export const createBrand = createAsyncThunk(
     }
   }
 );
+
+export const resetState = createAction("Reset_all");
 
 const initialState = {
   brands: [],
@@ -54,7 +56,7 @@ export const brandSlice = createSlice({
         state.message = action.error;
       })
       .addCase(createBrand.pending, (state) => {
-        state.isLoading = true;        
+        state.isLoading = true;
       })
       .addCase(createBrand.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -68,7 +70,8 @@ export const brandSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 
