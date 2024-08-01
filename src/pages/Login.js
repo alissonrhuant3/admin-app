@@ -31,7 +31,7 @@ const Login = () => {
     if (isSuccess) {
       navigate("admin");
     } else {
-      alert("not");
+      
     }
   }, [user, isLoading, isError, isSuccess, message]);
   return (
