@@ -12,6 +12,17 @@ export const getCategories = createAsyncThunk(
   }
 );
 
+export const getABlogCategory = createAsyncThunk(
+  "blogCategory/get-blog-category",
+  async (id, thunkAPI) => {
+    try {
+      return await bCategoryService.getBlogCategory(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const createCategorie = createAsyncThunk(
   "blogCategory/create-categorie",
   async (categoryData, thunkAPI) => {
@@ -23,11 +34,22 @@ export const createCategorie = createAsyncThunk(
   }
 );
 
-export const deleteCategorie = createAsyncThunk(
-  "blogCategory/delete-categorie",
+export const updateABlogCategory = createAsyncThunk(
+  "blogCategory/update-category",
+  async (category, thunkAPI) => {
+    try {
+      return await bCategoryService.updateBlogCategory(category);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteABlogCategory = createAsyncThunk(
+  "blogCategory/delete-category",
   async (id, thunkAPI) => {
     try {
-      return await bCategoryService.deleteBlogCategories(id);
+      return await bCategoryService.deleteBlogCategory(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -66,6 +88,21 @@ export const bCategorySlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
+      .addCase(getABlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getABlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.categoryName = action.payload.title;
+      })
+      .addCase(getABlogCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
       .addCase(createCategorie.pending, (state) => {
         state.isLoading = true;
       })
@@ -82,17 +119,32 @@ export const bCategorySlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(deleteCategorie.pending, (state) => {
+      .addCase(updateABlogCategory.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteCategorie.fulfilled, (state, action) => {
+      .addCase(updateABlogCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deleteBlogCategory = action.payload;
+        state.updatedCategory = action.payload;
         state.message = "success";
       })
-      .addCase(deleteCategorie.rejected, (state, action) => {
+      .addCase(updateABlogCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(deleteABlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteABlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.message = "deleteSuccess";
+      })
+      .addCase(deleteABlogCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

@@ -8,13 +8,33 @@ const getBlogCategories = async () => {
   return response.data;
 };
 
-const createBlogCategories = async (category) => {
-  const response = await axios.post(`${base_url}/blogcategory/`, category, config);
+const getBlogCategory = async (id) => {
+  const response = await axios.get(`${base_url}/blogcategory/${id}`, config);
 
   return response.data;
 };
 
-const deleteBlogCategories = async (id) => {
+const createBlogCategories = async (category) => {
+  const response = await axios.post(
+    `${base_url}/blogcategory/`,
+    category,
+    config
+  );
+
+  return response.data;
+};
+
+const updateBlogCategory = async (category) => {
+  const response = await axios.put(
+    `${base_url}/blogcategory/${category.id}`,
+    { title: category.categoryData.title },
+    config
+  );
+
+  return response.data;
+};
+
+const deleteBlogCategory = async (id) => {
   const response = await axios.delete(`${base_url}/blogcategory/${id}`, config);
 
   return response.data;
@@ -23,7 +43,9 @@ const deleteBlogCategories = async (id) => {
 const bCategoryService = {
   getBlogCategories,
   createBlogCategories,
-  deleteBlogCategories
+  deleteBlogCategory,
+  getBlogCategory,
+  updateBlogCategory,
 };
 
 export default bCategoryService;

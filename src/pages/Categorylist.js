@@ -42,7 +42,7 @@ const Categorylist = () => {
   const { isSuccess, isError, isLoading, message } = deletedPCategory;
 
   useEffect(() => {
-    if (message === "deleteSuccess") {
+    if (message === "deleteSuccess" && isSuccess) {
       toast.success("Marca Deletada com Sucesso!");
       dispatch(resetState());
     }
