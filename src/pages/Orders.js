@@ -41,17 +41,13 @@ const Orders = () => {
   const data1 = [];
   for (let i = 0; i < orderState.length; i++) {
     data1.push({
-      key: i,
+      key: i + 1,
       name: orderState[i].orderBy.firstname,
-      product: orderState[i].products.map((i, j) => {
-        return (
-          <>
-            <ul key={j}>
-              <li>{i.product.title}</li>
-            </ul>
-          </>
-        );
-      }),
+      product: (
+        <Link to={`/admin/order/${orderState[i].orderBy._id}`}>
+          Visualizar Pedidos
+        </Link>
+      ),
       amount: `R$ ${orderState[i].paymentIntent.amount}`,
       date: new Date(orderState[i].createdAt).toLocaleString(),
       action: (
