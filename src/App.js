@@ -24,6 +24,7 @@ import Couponlist from "./pages/Couponlist";
 import Addcoupon from "./pages/Addcoupon";
 import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
+import { PrivateRoutes } from "./routing/PrivateRoutes";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/admin" element={<MainLayout />}>
+        <Route path="/admin" element={<PrivateRoutes><MainLayout /></PrivateRoutes>}>
           <Route index element={<Dashboard />}/>
           <Route path="enquiries" element={<Enquiries />}/>
           <Route path="enquiries/:id" element={<ViewEnq />}/>

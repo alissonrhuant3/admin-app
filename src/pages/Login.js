@@ -29,7 +29,7 @@ const Login = () => {
   const { user, isLoading, isError, isSuccess, message } = authState.auth;
   useEffect(() => {
     if (isSuccess) {
-      navigate("admin");
+      window.location.replace("http://localhost:3001/admin");
     } else {
       
     }
